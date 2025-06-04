@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book QR App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="container mt-5">
+    <h1 class="mb-4">Yangi kitob qo'shish</h1>
+    <form method="POST" action="/add-book">
+        <input name="title" class="form-control mb-2" placeholder="Kitob nomi" required>
+        <input name="author" class="form-control mb-2" placeholder="Muallif" required>
+        <button type="submit" class="btn btn-primary">QR yaratish & Qo‘shish</button>
+    </form>
+
+    <hr>
+    <h2>Kitoblar ro‘yxati</h2>
+    <ul class="list-group">
+        {% for book in books %}
+        <li class="list-group-item">
+            <strong>{{ book.title }}</strong> - {{ book.author }}
+            {% if book.is_borrowed %}
+                <span class="badge bg-danger">Band</span>
+            {% else %}
+                <span class="badge bg-success">Bo‘sh</span>
+            {% endif %}
+            <br>
+            <img src="{{ url_for('static', filename=book.qr_code.replace('app/static/', '')) }}" width="120">
+        </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="/scan" class="btn btn-secondary">QR orqali olish/qaytarish</a>
+    <a href="/admin" class="btn btn-dark">📊 Admin Panel</a>
+</body>
+</html>
